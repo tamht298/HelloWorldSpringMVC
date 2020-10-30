@@ -40,7 +40,7 @@ public class UserServiceImpl extends Thread implements UserService {
 
     @Override
     public boolean updateUser(User user) {
-        logger.info(mongoTemplate);
+        logger.info("User: " + mongoTemplate);
 
         Optional<User> isPresentUser = userRepo.findByUsername(user.getUsername());
         if (!isValidateUsername(user.getUsername()) || !isPresentUser.isPresent()) {
@@ -55,16 +55,17 @@ public class UserServiceImpl extends Thread implements UserService {
             mongoTemplate.findAndModify(query, Update.update("position", user.getPosition()), User.class);
         }
 
-        Thread t1 = new Thread(){
+        Thread t1 = new Thread() {
             @Override
             public void run() {
-                mongoTemplate.findAndModify(query, new Update().inc("count", 1), User.class);
+                mongoTemplate.upsert(query, new Update().inc("count", 1), User.class);
 
             }
         };
         t1.start();
 
-        mongoTemplate.findAndModify(query, new Update().inc("count", 1), User.class);
+
+        mongoTemplate.upsert(query, new Update().inc("count", 1), User.class);
 
         return true;
 
@@ -85,7 +86,6 @@ public class UserServiceImpl extends Thread implements UserService {
         }
         return null;
     }
-
 
 
 }
