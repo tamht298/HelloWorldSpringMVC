@@ -16,8 +16,6 @@ import java.util.*;
 
 import org.apache.log4j.Logger;
 
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Update.update;
 
 @Service
 @Transactional
@@ -43,11 +41,11 @@ public class UserServiceImpl extends Thread implements UserService {
     @Override
     public boolean updateUser(User user) {
         logger.info(mongoTemplate);
+
         Optional<User> isPresentUser = userRepo.findByUsername(user.getUsername());
         if (!isValidateUsername(user.getUsername()) || !isPresentUser.isPresent()) {
             return false;
         }
-        User existUser = isPresentUser.get();
         Query query = new Query(Criteria.where("username").is(user.getUsername()));
 
         if (user.getLocation() != null) {
@@ -65,6 +63,7 @@ public class UserServiceImpl extends Thread implements UserService {
             }
         };
         t1.start();
+
         mongoTemplate.findAndModify(query, new Update().inc("count", 1), User.class);
 
         return true;

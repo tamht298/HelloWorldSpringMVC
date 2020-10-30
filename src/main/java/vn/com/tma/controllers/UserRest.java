@@ -20,7 +20,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 @RestController
 @RequestMapping(value = "/api")
-public class UserRest{
+public class UserRest {
     private Logger logger = Logger.getLogger(UserRest.class);
 
     private UserService userService;
@@ -52,6 +52,5 @@ public class UserRest{
         return ResponseEntity.ok(createdUser);
 
     }
-
 
 }

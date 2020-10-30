@@ -35,15 +35,9 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
         return MongoClients.create(mongoClientSettings);
     }
 
-
     @Override
     public Collection getMappingBasePackages() {
         return Collections.singleton("vn.com.tma");
     }
 
-
-//    @Bean
-//    public MongoTemplate mongoTemplate() {
-//        return new MongoTemplate(mongoClient(), "test");
-//    }
 }
