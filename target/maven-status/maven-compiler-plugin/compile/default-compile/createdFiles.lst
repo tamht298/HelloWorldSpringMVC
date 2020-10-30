@@ -1,0 +1,11 @@
+vn\com\tma\controllers\HelloRest.class
+vn\com\tma\services\UserService.class
+vn\com\tma\controllers\UserRest.class
+vn\com\tma\config\MongoConfig.class
+vn\com\tma\models\User.class
+vn\com\tma\config\HelloWorldConfiguration.class
+vn\com\tma\models\HelloWorld.class
+vn\com\tma\services\impl\UserServiceImpl$1.class
+vn\com\tma\config\HelloWorldInitializer.class
+vn\com\tma\repositories\UserRepo.class
+vn\com\tma\services\impl\UserServiceImpl.class
