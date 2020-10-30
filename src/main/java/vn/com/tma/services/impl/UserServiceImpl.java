@@ -58,14 +58,14 @@ public class UserServiceImpl extends Thread implements UserService {
         Thread t1 = new Thread() {
             @Override
             public void run() {
-                mongoTemplate.upsert(query, new Update().inc("count", 1), User.class);
+                mongoTemplate.updateFirst(query, new Update().inc("count", 1), User.class);
 
             }
         };
         t1.start();
 
 
-        mongoTemplate.upsert(query, new Update().inc("count", 1), User.class);
+        mongoTemplate.updateFirst(query, new Update().inc("count", 1), User.class);
 
         return true;
 
