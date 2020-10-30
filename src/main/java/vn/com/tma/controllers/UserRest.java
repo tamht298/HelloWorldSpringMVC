@@ -46,11 +46,5 @@ public class UserRest {
 
     }
 
-    @PostMapping(value = "/users")
-    public ResponseEntity<?> createUser(@RequestBody User user) {
-        User createdUser = userService.createUser(user);
-        return ResponseEntity.ok(createdUser);
-
-    }
 
 }

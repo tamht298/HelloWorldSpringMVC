@@ -86,13 +86,6 @@ public class UserServiceImpl extends Thread implements UserService {
         return null;
     }
 
-    @Override
-    public User createUser(User user) {
-        user.set_id(ObjectId.get());
-        logger.info(user);
-//        return mongoTemplate.insert(user);
-        return mongoTemplate.save(user, "user");
-    }
 
 
 }
