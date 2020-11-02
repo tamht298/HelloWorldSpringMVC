@@ -2,15 +2,19 @@ package vn.com.tma.services.impl;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.mongodb.core.schema.JsonSchemaObject;
+import org.springframework.data.mongodb.core.schema.JsonSchemaProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.com.tma.models.User;
 import vn.com.tma.repositories.UserRepo;
 import vn.com.tma.services.UserService;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 import java.util.*;
 
@@ -22,8 +26,8 @@ import org.apache.log4j.Logger;
 public class UserServiceImpl extends Thread implements UserService {
 
     private Logger logger = Logger.getLogger(UserServiceImpl.class);
-    private UserRepo userRepo;
 
+    private UserRepo userRepo;
     private MongoTemplate mongoTemplate;
 
     @Autowired
@@ -46,7 +50,7 @@ public class UserServiceImpl extends Thread implements UserService {
         if (!isValidateUsername(user.getUsername()) || !isPresentUser.isPresent()) {
             return false;
         }
-        Query query = new Query(Criteria.where("username").is(user.getUsername()));
+        Query query = new Query(where("username").is(user.getUsername()));
 
         if (user.getLocation() != null) {
             mongoTemplate.findAndModify(query, Update.update("location", user.getLocation()), User.class);
@@ -63,10 +67,13 @@ public class UserServiceImpl extends Thread implements UserService {
             }
         };
         t1.start();
+        mongoTemplate.findAndModify(
+                query,
+                new Update().inc("count", 1),
+                FindAndModifyOptions.options().returnNew(true),
+                User.class);
 
-
-        mongoTemplate.updateFirst(query, new Update().inc("count", 1), User.class);
-
+//        mongoTemplate.updateFirst(query, new Update().inc("count", 1), User.class);
         return true;
 
     }
@@ -80,12 +87,14 @@ public class UserServiceImpl extends Thread implements UserService {
 
     @Override
     public User getUserByUsername(String username) {
+
         Optional<User> userOptional = userRepo.findByUsername(username);
         if (userOptional.isPresent()) {
             return userOptional.get();
         }
         return null;
     }
+
 
 
 }

@@ -11,7 +11,7 @@ import org.springframework.web.servlet.view.JstlView;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = {
-        "vn.com.tma"
+        "vn.com.tma.*"
 })
 
 public class HelloWorldConfiguration  {
